@@ -18,6 +18,17 @@ gset_names_list <- list(
   "GSE92921"
 )
 
+# Set column names which can include MSS values
+mss_colnames <- list(
+  "mmr.status:ch1",
+  "msi_status:ch1",
+  "microsatellite.status:ch1",
+  "microsatellite status:ch1",
+  "microsatellite instability (msi) status:ch1",
+  "group:ch1",
+  "characteristics_ch1"
+)
+
 # ------------------------------------------------------------------------------
 # GET ALL DATA
 # ------------------------------------------------------------------------------
@@ -51,6 +62,21 @@ for(gset_name in gset_names_list) {
   gset_mdata <- pData(gset_raw[[1]])
   gset_gene_names <- rownames(gset_exprs)
   gset_sample_names <- colnames(gset_exprs)
+
+  # Delete sample names which has unknown value
+  if (length(intersect(mss_colnames, colnames(gset_mdata))) > 0) {
+    
+    # Set column name for MSS
+    mss_colname <- intersect(mss_colnames, colnames(gset_mdata))[[1]]
+    
+    for (sample_name in gset_sample_names) {
+      if (!grepl("MSI|MSS|dMMR|pMMR", gset_mdata[sample_name, mss_colname], ignore.case = TRUE)) {
+        gset_sample_names <- gset_sample_names[gset_sample_names != sample_name]
+      }
+    }
+  } else {
+    message("Could not found MSS values.")
+  }
   
   # Set GEO set information
   new_gset_info = c(
@@ -71,7 +97,7 @@ for(gset_name in gset_names_list) {
 message(paste0(capture.output(gsets_info), collapse = "\n"))
 
 # ------------------------------------------------------------------------------
-# SET GENE AND SAMPLE NAMES
+# SET VALID GENE AND SAMPLE NAMES
 # ------------------------------------------------------------------------------
 
 # Intersect gene names to get mutual genes
@@ -143,31 +169,28 @@ rownames(gset_combined_mdata) <- gset_sample_names
 sample_count <- 0
 for (gset_mdata in gset_all_mdata) {
   
-  mss_colnames <- list(
-    "mmr.status:ch1",
-    "msi_status:ch1",
-    "microsatellite.status:ch1",
-    "microsatellite status:ch1",
-    "microsatellite instability (msi) status:ch1",
-    "group:ch1",
-    "characteristics_ch1"
-  )
-  
   if (length(intersect(mss_colnames, colnames(gset_mdata))) > 0) {
+    
     # Set column name for MSS
     mss_colname <- intersect(mss_colnames, colnames(gset_mdata))[[1]]
     
     # Get sample names
-    sample_names <- rownames(gset_mdata)
+    sample_names <- intersect(gset_sample_names, rownames(gset_mdata))
     
     # Set metadata values for every sample
     for (sample_name in sample_names) {
+      
       sample_count <- sample_count + 1
       message("Getting the metadata values of sample #", sample_count, " out of ", total_sample, ": ", sample_name)
-      if (grepl("MSI|dMMR", gset_mdata[sample_name, mss_colname])) {
-        gset_combined_mdata[sample_name, 1] <- "MSI"
-      } else {
+      
+      if (grepl("MSI-L", gset_mdata[sample_name, mss_colname], ignore.case = TRUE)) {
+        gset_combined_mdata[sample_name, 1] <- "MSI-L"
+      } else if (grepl("MSI|dMMR", gset_mdata[sample_name, mss_colname], ignore.case = TRUE)) {
+        gset_combined_mdata[sample_name, 1] <- "MSI-H"
+      } else if (grepl("MSS|pMMR", gset_mdata[sample_name, mss_colname], ignore.case = TRUE)) {
         gset_combined_mdata[sample_name, 1] <- "MSS"
+      } else {
+        gset_combined_mdata[sample_name, 1] <- NA
       }
     }
   }
@@ -190,12 +213,15 @@ rownames(gset_combined_exprs) <- gset_sample_names
 # Set expression values
 sample_count <- 0
 for (gset_exprs in gset_all_exprs) {
+  
   # Get sample names
-  sample_names <- colnames(gset_exprs)
+  sample_names <- intersect(gset_sample_names, colnames(gset_exprs))
   
   for (sample_name in sample_names) {
+    
     sample_count <- sample_count + 1
     message("Getting the expression values of sample #", sample_count, " out of ", total_sample, ": ", sample_name)
+    
     for (external_gene_name in gset_gene_names) {
       
       # Get affymetrix gene names
