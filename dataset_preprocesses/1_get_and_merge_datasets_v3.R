@@ -5,6 +5,10 @@ library("biomaRt")
 # Set working directory
 setwd("~/Desktop")
 
+# ------------------------------------------------------------------------------
+# CONFIGURATIONS
+# ------------------------------------------------------------------------------
+
 # Set GEO data set names
 gset_names <- list(
   "GSE13067",
@@ -14,8 +18,7 @@ gset_names <- list(
   "GSE35896",
   "GSE39084",
   "GSE39582",
-  "GSE75316",
-  "GSE92921"
+  "GSE75316"
 )
 
 # Set column names which can include MSS values
@@ -29,9 +32,18 @@ mss_colnames <- list(
   "characteristics_ch1"
 )
 
+# Get current date and time for file naming
+current_date_time <- format(as.POSIXct(Sys.time()), format = "%y-%m-%d_%H-%M-%S")
+
+# Set file names
+exprs_file_name <- paste(current_date_time, "exprs.csv", sep = "_")
+mdata_file_name <- paste(current_date_time, "metadata.csv", sep = "_")
+
 # ------------------------------------------------------------------------------
 # GET ALL DATA
 # ------------------------------------------------------------------------------
+
+message("Getting GEO data...")
 
 # Set empty lists
 gset_all_gene_names <- list()
@@ -106,6 +118,8 @@ message(paste0(capture.output(gsets_info), collapse = "\n"))
 # SET VALID GENE AND SAMPLE NAMES
 # ------------------------------------------------------------------------------
 
+message("Setting valid gene and sample names...")
+
 # Intersect gene names to get mutual genes
 gset_gene_names <- Reduce(intersect, gset_all_gene_names)
 
@@ -158,9 +172,6 @@ total_gene <- length(gset_merged_gene_names)
 
 message("Total Samples: ", total_sample)
 message("Total Genes: ", total_gene)
-
-# Get current date and time for file naming
-current_date_time <- format(as.POSIXct(Sys.time()), format = "%y-%m-%d_%H-%M-%S")
 
 # ------------------------------------------------------------------------------
 # MERGE METADATA AND SAVE AS CSV
@@ -216,7 +227,7 @@ for(gset_name in gset_names) {
 message("Got all metadata values.")
 
 # Save as csv file
-write.csv(gset_merged_mdata, file=paste(current_date_time, "metadata.csv", sep = "_"))
+write.csv(gset_merged_mdata, file = mdata_file_name)
 
 # ------------------------------------------------------------------------------
 # MERGE EXPRESSIONS AND SAVE AS CSV
@@ -259,8 +270,12 @@ for (gset_exprs in gset_all_exprs) {
 
 message("Got all expression values.")
 
-# Save as csv file
-write.csv(gset_merged_exprs, file=paste(current_date_time, "exprs.csv", sep = "_"))
+# ------------------------------------------------------------------------------
+# SAVE AS CSV
+# ------------------------------------------------------------------------------
+
+message("Saving as CSV...")
+write.csv(gset_merged_exprs, file = exprs_file_name)
 
 # ------------------------------------------------------------------------------
 
