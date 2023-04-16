@@ -1,8 +1,5 @@
-# Source
-# https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html
-
 library(limma)
-library(edgeR)
+library(genefilter)
 
 # Set working directory
 setwd("~/Desktop")
@@ -12,6 +9,7 @@ file_date_time <- "23-04-10_19-19-18"
 
 exprs_file_name <- paste(file_date_time, "exprs", "corrected.csv", sep = "_")
 mdata_file_name <-paste(file_date_time, "metadata.csv", sep = "_")
+selected_exprs_file_name <- paste(file_date_time, "exprs", "selected.csv", sep = "_")
 
 # ------------------------------------------------------------------------------
 # PREPARING COUNT DATA
@@ -37,56 +35,64 @@ if(
 }
 
 # ------------------------------------------------------------------------------
-# PREPROCESSES
+# DIFFERENTIAL GENE EXPRESSION ANALYSIS
 # ------------------------------------------------------------------------------
-
-message("Preprocessing...")
 
 # Convert rows into columns and columns into rows
 exprs_table <- as.data.frame(t(exprs_table))
 
-# Create DGE object
-dge_exprs <- DGEList(exprs_table) # TODO: negative counts not allowed diyor
-dge_exprs <- calcNormFactors(dge_exprs)
+# Convert the data to log2 scale
+log_data <- log2(exprs_table + 1)
 
-# Filter low-expressed genes
-cutoff <- 1
-drop <- which(apply(cpm(dge_exprs), 1, max) < cutoff)
-dge_exprs <- dge_exprs[-drop,]
+# Normalize the data
+norm_data <- normalizeBetweenArrays(log_data, method = "quantile")
 
-# Get sample names
-sample_names <- colnames(exprs_table) 
+# Remove lowly expressed genes
+keep <- rowSums(norm_data > 0) >= ncol(norm_data) * 0.1
+norm_data <- norm_data[keep,]
 
-mm <- model.matrix(mdata_table[,Status])
-y <- voom(dge_exprs, mm, plot = T)
+# Remove highly variable genes
+vars <- rowVars(norm_data)
+vars[is.na(vars)] <- 0 # replace any NA values with 0
+selected <- order(vars, decreasing = TRUE)[1:sum(vars > median(vars, na.rm = TRUE))]
+norm_data <- norm_data[selected, ]
+
+# Create a new column with valid R names for the Status variable
+mdata_table$Status_R <- make.names(mdata_table$Status)
+
+# Create the design matrix using the new column
+design <- model.matrix(
+  ~0 + Status_R,
+  data = mdata_table
+)
+
+# Create the contrast matrix
+contrast_matrix <- makeContrasts(
+  MSI_H_vs_MSI_L = Status_RMSI.H - Status_RMSI.L,
+  MSI_H_vs_MSS = Status_RMSI.H - Status_RMSS,
+  MSI_L_vs_MSS = Status_RMSI.L - Status_RMSS,
+  levels = colnames(design)
+)
+
+# Fit the linear model
+fit <- lmFit(norm_data, design)
+
+# Apply the eBayes function on fit
+fit <- eBayes(fit)
+
+# Perform differential expression analysis
+results <- contrasts.fit(fit, contrast_matrix)
+
+# Extract the significant genes using a cutoff of adjusted p-value < 0.05
+sig_genes <- topTable(results, coef = 1, adjust.method = "BH")
 
 # ------------------------------------------------------------------------------
-# DIFFERENTIAL GENE EXPRESSION ANALYSIS
+# SAVE AS CSV
 # ------------------------------------------------------------------------------
 
-# Fit a linear model using weighted least squares for each gene
-fit <- lmFit(y, mm)
+message("Saving as CSV...")
+write.csv(sig_genes, file = selected_exprs_file_name)
 
-contr <- makeContrasts(groupI5.9 - groupI5.6, levels = colnames(coef(fit)))
+# ------------------------------------------------------------------------------
 
-#sfkjnkdljfnb----
-
-# Run DESeq
-dds <- DESeq(dds)
-res <- results(dds)
-
-# Explore Results
-summary(res)
-
-res0.01 <- results(dds, alpha = 0.01)
-summary(res0.01)
-
-# Contrasts
-resultsNames(dds)
-
-# TODO: What is this?
-# # e.g.: treated_4hrs, treated_8hrs, untreated
-# results(dds, contrast = c("dexamethasone", "treated_4hrs", "untreated"))
-
-# MA plot
-plotMA(res)
+message("Completed.")
