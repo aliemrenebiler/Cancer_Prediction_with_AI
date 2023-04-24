@@ -3,7 +3,7 @@ import csv
 import numpy as np
 
 
-# READ FUNCTIONS
+# READ CSV FILES
 def get_mss_statuses(mdata_file_path):
     # Open file
     file = open(mdata_file_path, "r")
