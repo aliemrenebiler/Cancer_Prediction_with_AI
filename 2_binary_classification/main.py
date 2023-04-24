@@ -16,8 +16,10 @@ labels = get_mss_statuses(mdata_file_path)
 # Set features
 features = get_expressions(exprs_file_path)
 
+# Train With Naive Bayes
 model, features_test, labels_test = train_with_naive_bayes(features, labels)
 
-naive_bayes_success = test_with_naive_bayes(model, features_test, labels_test)
+# Test Naive Bayes
+naive_bayes_success = test_naive_bayes(model, features_test, labels_test)
 
 print(naive_bayes_success)

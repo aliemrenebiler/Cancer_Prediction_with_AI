@@ -59,7 +59,7 @@ def train_with_naive_bayes(features, labels):
     return model, features_test, labels_test
 
 
-def test_with_naive_bayes(model, features_test, labels_test):
+def test_naive_bayes(model, features_test, labels_test):
     labels_predict = model.predict(features_test)
 
     success_count = 0
