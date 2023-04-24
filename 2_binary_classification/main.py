@@ -16,13 +16,13 @@ exprs_file_name = "3_deg_exprs.csv"
 mdata_file_path = os.path.join(input_folder_path, mdata_file_name)
 exprs_file_path = os.path.join(input_folder_path, exprs_file_name)
 
-# Set labels
+# Set labels and features
+print("Reading CSV files...")
 labels = get_mss_statuses(mdata_file_path)
-
-# Set features
 features = get_expressions(exprs_file_path)
 
 # Train And Test With Naive Bayes
+print("Training with Naive Bayes...")
 model, features_test, labels_test = train_with_classifier(
     GaussianNB(),
     features,
@@ -35,6 +35,7 @@ naive_bayes_success = test_model(
 )
 
 # Train And Test With Random Forest
+print("Training with Random Forest...")
 model, features_test, labels_test = train_with_classifier(
     RandomForestClassifier(),
     features,
@@ -47,6 +48,7 @@ random_forest_success = test_model(
 )
 
 # Train And Test With k-NN
+print("Training with k-Nearest Neighbor...")
 model, features_test, labels_test = train_with_classifier(
     KNeighborsClassifier(),
     features,
@@ -59,6 +61,7 @@ knn_success = test_model(
 )
 
 # Train And Test With Decision Tree
+print("Training with Decision Tree...")
 model, features_test, labels_test = train_with_classifier(
     DecisionTreeClassifier(),
     features,
@@ -71,6 +74,7 @@ decision_tree_success = test_model(
 )
 
 # Train And Test With Support Vector Machine
+print("Training with Support Vector Machine...")
 model, features_test, labels_test = train_with_classifier(
     SVC(),
     features,
@@ -83,24 +87,26 @@ support_vector_success = test_model(
 )
 
 # Train And Test With Logistic Regression
+print("Training with Logistic Regression...")
 model, features_test, labels_test = train_with_classifier(
     LogisticRegression(max_iter=1000),
     features,
     labels,
 )
-logistic_regression_success = test_model(
+logistic_reg_success = test_model(
     model,
     features_test,
     labels_test,
 )
+print("Completed.")
 
-print(f"----------------------|---------")
-print(f" Classifiers          | Success ")
-print(f"----------------------|---------")
-print(f" Naive Bayes:         | {round(naive_bayes_success, 3)}")
-print(f" Random Forest:       | {round(random_forest_success, 3)}")
-print(f" k-Nearest Neighbor:  | {round(knn_success, 3)}")
-print(f" Decision Tree:       | {round(decision_tree_success, 3)}")
-print(f" Support Vector:      | {round(support_vector_success, 3)}")
-print(f" Logistic Regression: | {round(logistic_regression_success, 3)}")
-print(f"----------------------|---------")
+print(f"---------------------|---------")
+print(f" Classifiers         | Success ")
+print(f"---------------------|---------")
+print(f" Naive Bayes         | {round(naive_bayes_success, 1)}%")
+print(f" Random Forest       | {round(random_forest_success, 1)}%")
+print(f" k-Nearest Neighbor  | {round(knn_success, 1)}%")
+print(f" Decision Tree       | {round(decision_tree_success, 1)}%")
+print(f" Support Vector      | {round(support_vector_success, 1)}%")
+print(f" Logistic Regression | {round(logistic_reg_success, 1)}%")
+print(f"---------------------|---------")
