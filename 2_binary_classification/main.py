@@ -16,13 +16,8 @@ labels = get_mss_statuses(mdata_file_path)
 # Set features
 features = get_expressions(exprs_file_path)
 
-features_train, features_test, labels_train, labels_test = train_test_split(
-    features, labels, test_size=0.25, random_state=1
-)
+model, features_test, labels_test = train_with_naive_bayes(features, labels)
 
-gnb = GaussianNB()
+naive_bayes_success = test_with_naive_bayes(model, features_test, labels_test)
 
-model = gnb.fit(features_train, labels_train)
-
-predicted_values = model.predict(features_test)
-print(predicted_values)
+print(naive_bayes_success)

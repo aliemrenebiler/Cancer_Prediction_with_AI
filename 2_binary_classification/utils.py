@@ -45,3 +45,28 @@ def get_expressions(exprs_file_path):
     file.close()
 
     return features
+
+
+def train_with_naive_bayes(features, labels):
+    features_train, features_test, labels_train, labels_test = train_test_split(
+        features, labels, test_size=0.25, random_state=1
+    )
+
+    gnb = GaussianNB()
+
+    model = gnb.fit(features_train, labels_train)
+
+    return model, features_test, labels_test
+
+
+def test_with_naive_bayes(model, features_test, labels_test):
+    labels_predict = model.predict(features_test)
+
+    success_count = 0
+    test_count = len(labels_predict)
+
+    for i in range(test_count):
+        if labels_predict[i] == labels_test[i]:
+            success_count += 1
+
+    return success_count / test_count * 100
