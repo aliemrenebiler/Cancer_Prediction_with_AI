@@ -84,7 +84,7 @@ support_vector_success = test_model(
 
 # Train And Test With Logistic Regression
 model, features_test, labels_test = train_with_classifier(
-    LogisticRegression(),
+    LogisticRegression(max_iter=1000),
     features,
     labels,
 )
@@ -94,10 +94,13 @@ logistic_regression_success = test_model(
     labels_test,
 )
 
-print("Classifiers\t\tSuccess")
-print(f"Naive Bayes:\t\t{naive_bayes_success}")
-print(f"Random Forest:\t\t{random_forest_success}")
-print(f"k-Nearest Neighbor:\t{knn_success}")
-print(f"Decision Tree:\t\t{decision_tree_success}")
-print(f"Support Vector:\t\t{support_vector_success}")
-print(f"Logistic Regression:\t{logistic_regression_success}")
+print(f"----------------------|---------")
+print(f" Classifiers          | Success ")
+print(f"----------------------|---------")
+print(f" Naive Bayes:         | {round(naive_bayes_success, 3)}")
+print(f" Random Forest:       | {round(random_forest_success, 3)}")
+print(f" k-Nearest Neighbor:  | {round(knn_success, 3)}")
+print(f" Decision Tree:       | {round(decision_tree_success, 3)}")
+print(f" Support Vector:      | {round(support_vector_success, 3)}")
+print(f" Logistic Regression: | {round(logistic_regression_success, 3)}")
+print(f"----------------------|---------")
