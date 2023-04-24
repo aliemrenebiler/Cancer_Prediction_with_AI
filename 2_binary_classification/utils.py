@@ -1,9 +1,9 @@
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
 import csv
 import numpy as np
 
 
+# READ FUNCTIONS
 def get_mss_statuses(mdata_file_path):
     # Open file
     file = open(mdata_file_path, "r")
@@ -47,19 +47,18 @@ def get_expressions(exprs_file_path):
     return features
 
 
-def train_with_naive_bayes(features, labels):
+# TRAIN AND TEST FUNCTIONS
+def train_with_classifier(classifier, features, labels):
     features_train, features_test, labels_train, labels_test = train_test_split(
         features, labels, test_size=0.25, random_state=1
     )
 
-    gnb = GaussianNB()
-
-    model = gnb.fit(features_train, labels_train)
+    model = classifier.fit(features_train, labels_train)
 
     return model, features_test, labels_test
 
 
-def test_naive_bayes(model, features_test, labels_test):
+def test_model(model, features_test, labels_test):
     labels_predict = model.predict(features_test)
 
     success_count = 0
