@@ -12,12 +12,8 @@ setwd("~/Desktop")
 # Set file names
 mdata_file_name <- "1_merged_mdata.csv"
 exprs_file_name <- "2_corrected_exprs.csv"
-deg_genes_file_name <- "3_deg_genes.csv"
 deg_exprs_file_name <- "3_deg_exprs.csv"
-up_genes_file_name <- "3_up_genes.csv"
-up_table_file_name <- "3_up_table.csv"
-down_genes_file_name <- "3_down_genes.csv"
-down_table_file_name <- "3_down_table.csv"
+up_and_down_table_file_name <- "3_up_and_down_table.csv"
 
 # ------------------------------------------------------------------------------
 # PREPARING COUNT DATA
@@ -96,30 +92,30 @@ summary(results)
 
 message("Saving as CSV...")
 
+# Get upregulation and downregulation
 up <- which(results[,1] == 1)
-upGenes <- fit2[up, ]
-upTable <- topTable(upGenes[,1], number = nrow(fit2), sort.by = "logFC") 
-upTable$gene <- rownames(upTable)
-upTable <- upTable[order(-abs(upTable$logFC)),]
-rn_up = upTable$gene
-
-write.csv(rn_up, up_genes_file_name, row.names = FALSE)
-write.csv(upTable, up_table_file_name, row.names = FALSE)
-
 down <- which(results[,1] == -1)
-downGenes <- fit2[down, ]
-downTable <- topTable(downGenes[,1], number = nrow(fit2), sort.by = "logFC") 
-downTable$gene <- rownames(downTable)
-downTable <- downTable[order(-abs(downTable$logFC)),]
-rn_down = downTable$gene
 
-write.csv(rn_down, down_genes_file_name, row.names = FALSE)
-write.csv(downTable, down_table_file_name, row.names = FALSE)
+# Set upregulation table
+up_fit <- fit2[up, ]
+up_table <- topTable(up_fit[,1], number = nrow(fit2), sort.by = "logFC") 
+up_table$gene <- rownames(up_table)
+up_table <- up_table[order(-abs(up_table$logFC)),]
+up_table$type <- "up"
 
-dge_genes <- c(rn_up,rn_down)
-write.csv(dge_genes, deg_genes_file_name, row.names = FALSE)
+# Set downregulation table
+down_fit <- fit2[down, ]
+down_table <- topTable(down_fit[,1], number = nrow(fit2), sort.by = "logFC") 
+down_table$gene <- rownames(down_table)
+down_table <- down_table[order(-abs(down_table$logFC)),]
+down_table$type <- "down"
 
-exprs_dge<-exprs_table[,which(colnames(exprs_table) %in% dge_genes)]
+# Merge upregulation and downregulation tables and save as CSV
+up_down_table <- rbind(up_table, down_table)
+write.csv(up_down_table, up_and_down_table_file_name, row.names = FALSE)
+
+# Set upregulation and downregulation gene expressions and save as CSV
+exprs_dge <- exprs_table[,which(colnames(exprs_table) %in% up_down_table$gene)]
 write.csv(exprs_dge, deg_exprs_file_name)
 
 # ------------------------------------------------------------------------------
