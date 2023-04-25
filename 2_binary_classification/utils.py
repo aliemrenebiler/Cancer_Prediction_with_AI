@@ -1,4 +1,5 @@
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import ShuffleSplit
 import csv
 import numpy as np
 
@@ -59,13 +60,26 @@ def train_with_classifier(classifier, features, labels):
 
 
 def test_model(model, features_test, labels_test):
-    labels_predict = model.predict(features_test)
+    return model.score(features_test, labels_test) * 100
 
-    success_count = 0
-    test_count = len(labels_predict)
 
-    for i in range(test_count):
-        if labels_predict[i] == labels_test[i]:
-            success_count += 1
+def train_and_test_with_classifier(classifier, features, labels):
+    ss = ShuffleSplit(n_splits=5, test_size=0.25, random_state=1)
 
-    return success_count / test_count * 100
+    best_model = None
+    best_score = 0
+
+    for train_index, test_index in ss.split(range(len(labels))):
+        features_train = [features[i] for i in train_index]
+        features_test = [features[i] for i in test_index]
+        labels_train = [labels[i] for i in train_index]
+        labels_test = [labels[i] for i in test_index]
+
+        model = classifier.fit(features_train, labels_train)
+        score = model.score(features_test, labels_test) * 100
+
+        if best_model is None or (best_model is not None and best_score < score):
+            best_model = model
+            best_score = score
+
+    return best_model, best_score
