@@ -28,7 +28,7 @@ model, features_test, labels_test = train_with_classifier(
     features,
     labels,
 )
-naive_bayes_success = test_model(
+nb_score = test_model(
     model,
     features_test,
     labels_test,
@@ -41,7 +41,7 @@ model, features_test, labels_test = train_with_classifier(
     features,
     labels,
 )
-random_forest_success = test_model(
+rf_score = test_model(
     model,
     features_test,
     labels_test,
@@ -54,7 +54,7 @@ model, features_test, labels_test = train_with_classifier(
     features,
     labels,
 )
-knn_success = test_model(
+knn_score = test_model(
     model,
     features_test,
     labels_test,
@@ -67,7 +67,7 @@ model, features_test, labels_test = train_with_classifier(
     features,
     labels,
 )
-decision_tree_success = test_model(
+dt_score = test_model(
     model,
     features_test,
     labels_test,
@@ -80,7 +80,7 @@ model, features_test, labels_test = train_with_classifier(
     features,
     labels,
 )
-support_vector_success = test_model(
+svm_score = test_model(
     model,
     features_test,
     labels_test,
@@ -93,7 +93,7 @@ model, features_test, labels_test = train_with_classifier(
     features,
     labels,
 )
-logistic_reg_success = test_model(
+lr_score = test_model(
     model,
     features_test,
     labels_test,
@@ -103,10 +103,10 @@ print("Completed.")
 print(f"---------------------|--------")
 print(f" Classifiers         | Score  ")
 print(f"---------------------|--------")
-print(f" Naive Bayes         | {round(naive_bayes_success, 1)}%")
-print(f" Random Forest       | {round(random_forest_success, 1)}%")
-print(f" k-Nearest Neighbor  | {round(knn_success, 1)}%")
-print(f" Decision Tree       | {round(decision_tree_success, 1)}%")
-print(f" Support Vector      | {round(support_vector_success, 1)}%")
-print(f" Logistic Regression | {round(logistic_reg_success, 1)}%")
+print(f" Naive Bayes         | {round(nb_score, 1)}%")
+print(f" Random Forest       | {round(rf_score, 1)}%")
+print(f" k-Nearest Neighbor  | {round(knn_score, 1)}%")
+print(f" Decision Tree       | {round(dt_score, 1)}%")
+print(f" Support Vector      | {round(svm_score, 1)}%")
+print(f" Logistic Regression | {round(lr_score, 1)}%")
 print(f"---------------------|--------")
