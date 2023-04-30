@@ -42,6 +42,9 @@ if(
 # DIFFERENTIAL GENE EXPRESSION ANALYSIS
 # ------------------------------------------------------------------------------
 
+# Save gene count before
+gene_count_before <- ncol(exprs_table)
+
 message("DGE analysis in progress...")
 
 # Convert rows into columns and columns into rows as matrix
@@ -117,6 +120,25 @@ write.csv(up_down_table, up_and_down_table_file_name, row.names = FALSE)
 # Set upregulation and downregulation gene expressions and save as CSV
 exprs_dge <- exprs_table[,which(colnames(exprs_table) %in% up_down_table$gene)]
 write.csv(exprs_dge, deg_exprs_file_name)
+
+# ------------------------------------------------------------------------------
+# PRINT FINAL COUNTS
+# ------------------------------------------------------------------------------
+
+# Save gene count after
+gene_count_after <- ncol(exprs_dge)
+up_gene_count <- nrow(up_table)
+down_gene_count <- nrow(down_table)
+
+message("Total Genes (Before): ", gene_count_before)
+message(
+  "Total Genes (After): ",
+  gene_count_after,
+  " | Up: ",
+  up_gene_count,
+  " | Down: ",
+  down_gene_count
+)
 
 # ------------------------------------------------------------------------------
 
