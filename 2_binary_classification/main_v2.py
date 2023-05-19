@@ -1,4 +1,4 @@
-from utils import *
+from utils_v2 import *
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier

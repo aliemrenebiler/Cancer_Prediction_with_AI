@@ -1,4 +1,3 @@
-from sklearn.model_selection import train_test_split
 from sklearn.model_selection import ShuffleSplit
 import csv
 import numpy as np
@@ -49,20 +48,6 @@ def get_expressions(exprs_file_path):
 
 
 # TRAIN AND TEST FUNCTIONS
-def train_with_classifier(classifier, features, labels):
-    features_train, features_test, labels_train, labels_test = train_test_split(
-        features, labels, test_size=0.25, random_state=1
-    )
-
-    model = classifier.fit(features_train, labels_train)
-
-    return model, features_test, labels_test
-
-
-def test_model(model, features_test, labels_test):
-    return model.score(features_test, labels_test) * 100
-
-
 def train_and_test_with_classifier(classifier, features, labels):
     ss = ShuffleSplit(n_splits=5, test_size=0.25, random_state=1)
 
