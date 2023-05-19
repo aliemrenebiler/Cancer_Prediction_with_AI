@@ -101,7 +101,7 @@ shuffle_split_cv = create_shuffle_split_cross_validator(
 
 # Train and test for each classifier
 for i in range(len(classifiers)):
-    print(f"Training with {classifiers[i].name}...")
+    print(f"Training and testing with {classifiers[i].name}...")
     (
         classifiers[i].model,
         classifiers[i].score,
