@@ -92,7 +92,7 @@ labels = get_mss_statuses(mdata_file_path)
 features = get_expressions(exprs_file_path)
 
 # Create train and test groups
-print("Creating cross validator...")
+print("Creating Shuffle Split Cross Validator...")
 shuffle_split_cv = create_shuffle_split_cross_validator(
     n_split=5,
     test_size=0.25,
