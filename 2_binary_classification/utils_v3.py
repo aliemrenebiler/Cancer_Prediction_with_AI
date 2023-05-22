@@ -9,12 +9,12 @@ import numpy as np
 class Classifier:
     def __init__(
         self,
-        name: str,
+        name,
         classifier,
         param_grid,
-        best_params,
-        model,
-        score,
+        model=None,
+        score=None,
+        best_params=None,
     ):
         self.name = name
         self.classifier = classifier

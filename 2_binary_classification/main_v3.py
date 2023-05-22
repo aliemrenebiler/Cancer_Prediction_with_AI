@@ -30,9 +30,6 @@ CLASSIFIERS = [
         param_grid={
             "var_smoothing": np.logspace(0, -4, 100),
         },
-        best_params={},
-        model=None,
-        score=None,
     ),
     Classifier(
         name="Support Vector",
@@ -40,9 +37,6 @@ CLASSIFIERS = [
         param_grid={
             "C": [0.1, 1, 10],
         },
-        best_params={},
-        model=None,
-        score=None,
     ),
     Classifier(
         name="Decision Tree",
@@ -50,9 +44,6 @@ CLASSIFIERS = [
         param_grid={
             "min_samples_split": [2, 3, 4],
         },
-        best_params={},
-        model=None,
-        score=None,
     ),
     Classifier(
         name="Random Forest",
@@ -61,9 +52,6 @@ CLASSIFIERS = [
             "n_estimators": [100, 200],
             "min_samples_split": [2, 3, 4],
         },
-        best_params={},
-        model=None,
-        score=None,
     ),
     Classifier(
         name="k-Nearest Neighbor",
@@ -72,9 +60,6 @@ CLASSIFIERS = [
             "n_neighbors": list(range(1, 31)),
             "weights": ["uniform", "distance"],
         },
-        best_params={},
-        model=None,
-        score=None,
     ),
     Classifier(
         name="Logistic Regression",
@@ -84,9 +69,6 @@ CLASSIFIERS = [
             "max_iter": [1000],
             "penalty": ["l2"],
         },
-        best_params={},
-        model=None,
-        score=None,
     ),
 ]
 
