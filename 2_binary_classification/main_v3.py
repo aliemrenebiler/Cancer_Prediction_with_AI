@@ -11,8 +11,8 @@ import os
 
 # Input Configurations
 INPUT_FOLDER_PATH = "input"
-METADATA_FILE_PATH = "1_merged_mdata.csv"
-EXPRESSIONS_FILE_PATH = "3_deg_exprs.csv"
+METADATA_FILE_NAME = "1_merged_mdata.csv"
+EXPRESSIONS_FILE_NAME = "3_deg_exprs.csv"
 
 # Shuffle Split Configurations
 SPLIT_AMOUNT = 5
@@ -73,8 +73,8 @@ CLASSIFIERS = [
 ]
 
 # Set file paths
-mdata_file_path = os.path.join(INPUT_FOLDER_PATH, METADATA_FILE_PATH)
-exprs_file_path = os.path.join(INPUT_FOLDER_PATH, EXPRESSIONS_FILE_PATH)
+mdata_file_path = os.path.join(INPUT_FOLDER_PATH, METADATA_FILE_NAME)
+exprs_file_path = os.path.join(INPUT_FOLDER_PATH, EXPRESSIONS_FILE_NAME)
 
 # Set labels and features
 print("Reading CSV files...")
