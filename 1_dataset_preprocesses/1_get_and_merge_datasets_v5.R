@@ -19,7 +19,7 @@ gset_names <- list(
   "GSE39084",
   "GSE39582",
   "GSE75316",
-  "GSE35566"
+  "GSE35566" # This will be the test dataset
 )
 
 # Set column names which can include MSS values
