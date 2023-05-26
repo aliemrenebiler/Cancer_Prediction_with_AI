@@ -11,7 +11,6 @@ import os
 
 # Input Configurations
 INPUT_FOLDER_PATH = "input"
-OUTPUT_FOLDER_PATH = "output"
 CONF_MAT_FOLDER_PATH = "output/conf_mat"
 ROC_CURVE_FOLDER_PATH = "output/roc_curve"
 METADATA_FILE_NAME = "1_merged_mdata.csv"
