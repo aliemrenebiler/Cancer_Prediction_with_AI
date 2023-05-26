@@ -3,4 +3,6 @@
 */__pycache__
 */venv
 */input/*
-!*/input/.gitkeep
+*/output/conf_mat/*
+*/output/roc_curve/*
+!.gitkeep
