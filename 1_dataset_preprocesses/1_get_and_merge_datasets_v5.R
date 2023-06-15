@@ -2,12 +2,12 @@ library(GEOquery)
 library(Biobase)
 library("biomaRt")
 
-# Set working directory
-setwd("~/Desktop")
-
 # ------------------------------------------------------------------------------
 # CONFIGURATIONS
 # ------------------------------------------------------------------------------
+
+# Set working directory
+setwd("~/Desktop")
 
 # Set GEO data set names
 gset_names <- list(
@@ -35,7 +35,7 @@ mss_colnames <- list(
   "mss/msi status:ch1"
 )
 
-# Set file names
+# Set output file names
 exprs_file_name <- "1_merged_exprs.csv"
 mdata_file_name <- "1_merged_mdata.csv"
 

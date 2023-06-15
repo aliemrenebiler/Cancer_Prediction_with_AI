@@ -4,13 +4,14 @@ library(survminer)
 library(svglite)
 library(dplyr)
 
-# Set working directory
-setwd("~/Desktop")
-
 # ------------------------------------------------------------------------------
 # CONFIGURATIONS
 # ------------------------------------------------------------------------------
 
+# Set working directory
+setwd("~/Desktop")
+
+# Set GEO dataset name
 gset_name <- "GSE39582"
 
 # Set input file names
@@ -18,7 +19,7 @@ mdata_file_name <- "1_merged_mdata.csv"
 exprs_file_name <- "3_deg_exprs.csv"
 up_and_down_table_file_name <- "3_up_and_down_table.csv"
 
-# Set saved file names
+# Set output file names
 survival_mdata_file_name <- "4_survival_mdata.csv"
 survival_exprs_file_name <- "4_survival_exprs.csv"
 survival_up_and_down_table_file_name <- "4_survival_up_and_down_table.csv"

@@ -2,16 +2,18 @@ library(Biobase)
 library(limma)
 library(genefilter)
 
-# Set working directory
-setwd("~/Desktop")
-
 # ------------------------------------------------------------------------------
 # CONFIGURATIONS
 # ------------------------------------------------------------------------------
 
-# Set file names
+# Set working directory
+setwd("~/Desktop")
+
+# Set input file names
 mdata_file_name <- "1_merged_mdata.csv"
 exprs_file_name <- "2_corrected_exprs.csv"
+
+# Set output file names
 deg_exprs_file_name <- "3_deg_exprs.csv"
 up_and_down_table_file_name <- "3_up_and_down_table.csv"
 

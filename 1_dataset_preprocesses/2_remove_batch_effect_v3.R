@@ -2,16 +2,18 @@ library(ggfortify)
 library(limma)
 library(svglite)
 
-# Set working directory
-setwd("~/Desktop")
-
 # ------------------------------------------------------------------------------
 # CONFIGURATIONS
 # ------------------------------------------------------------------------------
 
-# Set file names
+# Set working directory
+setwd("~/Desktop")
+
+# Set input file names
 mdata_file_name <- "1_merged_mdata.csv"
 exprs_file_name <- "1_merged_exprs.csv"
+
+# Set output file names
 corrected_exprs_file_name <- "2_corrected_exprs.csv"
 pca_before_file_name <- "2_pca_before.svg"
 pca_after_file_name <- "2_pca_after.svg"
