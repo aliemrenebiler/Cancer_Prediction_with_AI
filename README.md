@@ -1,6 +1,6 @@
 # Cancer Prediction with AI
 
-This project is my graduation thesis, which is a bioinformatics about colon cancer (CRC). The main goal of the project is to develop a colorectal cancer classification software which is cheaper, based on machine learning and classification methods. The other goal is finding new potential survival markers (biomarkers) with survival analysis. More information in the [report](docs/Report_CPWAI.pdf.md).
+This project is my graduation thesis, which is a bioinformatics about colon cancer (CRC). The main goal of the project is to develop a colorectal cancer classification software which is cheaper, based on machine learning and classification methods. The other goal is finding new potential survival markers (biomarkers) with survival analysis. More information in the [report](docs/Report_CPWAI.pdf).
 
 ## How The Modules Work?
 
